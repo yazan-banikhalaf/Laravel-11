@@ -23,15 +23,20 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-        $data = $this->userInterface->store();
+        $data = $this->userInterface->store([
+            "name"=> $request->name,
+            "email"=> $request->email,
+            "password"=> bcrypt($request->password),
+        ]);
 
         return response()->json([
+            "message" => "success",
             "user" => $data,
         ], 200);
     }
     public function show($id)
     {
-        $user = User::find($id);
+        $user = $this->userInterface->find($id);
 
         if(!$user)
         {
@@ -45,7 +50,7 @@ class UserController extends Controller
     }
     public function update($id, Request $request)
     {
-        $user = User::find($id);
+        $user = $this->userInterface->find($id);
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
@@ -74,7 +79,7 @@ class UserController extends Controller
     }
     public function destroy($id)
     {
-        $user = User::find($id);
+        $user = $this->userInterface->find($id);
 
         if(!$user) {
             return response()->json(['message'=> 'User not found'], 404);

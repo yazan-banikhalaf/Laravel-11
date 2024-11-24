@@ -20,4 +20,8 @@ class UserRepository implements UserInterface
             "password"=> $data['password']
         ]);
     }
+    public function find($id)
+    {
+        return User::find($id);
+    }
 }
